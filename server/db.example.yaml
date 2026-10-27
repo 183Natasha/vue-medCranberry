@@ -1,0 +1,97 @@
+# ============================================================================
+# db.yaml — имитация БД «МедиКабинета» (YAML).
+# В будущем заменится на SQLite/PG; пока — единый файл с атомарной записью.
+#
+# Структура:
+#   meta                  — версия схемы, таймстэмп
+#   constants             — справочники (test_types, scales)
+#   users                 — пользователи (password_hash + salt, без plaintext)
+#   system_notifications  — broadcast-уведомления (admin)
+#   records               — данные пациентов (PatientRecord, как в store.ts)
+#
+# Правила:
+#   - строки-ловушки YAML-булеанов цитировать: "on", "off", "yes", "no"
+#   - даты: ISO 8601 ('YYYY-MM-DDTHH:MM:SS.sssZ') или 'YYYY-MM-DD'
+#   - timestamps (ms) — как в store.ts (Visit.date)
+# ============================================================================
+
+meta:
+  schema_version: 1
+  created_at: '2026-10-25T00:00:00.000Z'
+  updated_at: '2026-10-25T00:00:00.000Z'
+
+# ---------- Справочники ----------
+constants:
+  # Типы тестов (как в store.ts TEST_TYPES)
+  test_types:
+    HADS_A: { name: 'HADS-A (тревога)', max: 21 }
+    HADS_D: { name: 'HADS-D (депрессия)', max: 21 }
+    PHQ4:   { name: 'PHQ-4 (скрининг)', max: 12 }
+    PHQ9:   { name: 'PHQ-9 (депрессия)', max: 27 }
+    GAD7:   { name: 'GAD-7 (тревога)', max: 21 }
+    ISI:    { name: 'ISI (инсомния)', max: 28 }
+  # Шкалы (ключ как в scales.ts SCALES; тексты вопросов НЕ дублируются)
+  scales:
+    HADS: { title: 'HADS — госпитальная шкала тревоги и депрессии', question_count: 14 }
+    PHQ4: { title: 'PHQ-4 — экспресс-скрининг тревоги и депрессии', question_count: 4 }
+    PHQ9: { title: 'PHQ-9 — шкала депрессии', question_count: 9 }
+    GAD7: { title: 'GAD-7 — шкала генерализованного тревожного расстройства', question_count: 7 }
+    ISI:  { title: 'ISI — индекс тяжести инсомнии', question_count: 7 }
+
+# ---------- Пользователи ----------
+# Пароли: только sha256(password + '|' + salt). Demo-пароли: admin/admin, doctor/doctor, patient/patient
+users:
+  - id: 1
+    username: 'admin'
+    password_hash: 'sha256:514cfc7c92f2adb517172cdc6238da1bed61b0a6e7a54d176744f1acd961060e'
+    salt: 'c04b03c1f8dae5052cdcc15e63d84941'
+    role: 'admin'
+    full_name: 'Администратор системы'
+    birth_date: null
+    email: null
+  - id: 2
+    username: 'doctor'
+    password_hash: 'sha256:982e8ca6659ef07fadf93970dc4ff7adecd723624192eed1c750bec500ec5d97'
+    salt: 'e5c49f7662f194e36decf91733eed6fe'
+    role: 'doctor'
+    full_name: 'Др. Айболит'
+    birth_date: null
+  - id: 3
+    username: 'patient'
+    password_hash: 'sha256:eee92ca0b57e82c9c4c3587b803893b422e4239839ad05771b57e64cd752f63c'
+    salt: 'cb84c9998e3b1217224900effa7b1707'
+    role: 'patient'
+    full_name: 'Пациен Пациентов'
+    birth_date: '1990-05-14'
+
+# ---------- Системные (broadcast) уведомления ----------
+# severity: info | warning | critical
+# seen_by: [userId] — кто уже увидел (для future use)
+system_notifications: []
+
+# ---------- Записи пациентов ----------
+# Структура PatientRecord — как в src/store.ts: { card, tests, visits, recommendations }
+records:
+  - id: 3
+    card:
+      diagnosis: 'F41.1 Генерализованное тревожное расстройство'
+      notes: ''
+    tests:
+      - id: 1
+        date: '2026-10-20'
+        type: 'HADS_A'
+        score: 10
+      - id: 2
+        date: '2026-10-20'
+        type: 'HADS_D'
+        score: 6
+      - id: 3
+        date: '2026-10-25'
+        type: 'PHQ9'
+        score: 12
+      - id: 4
+        date: '2026-10-25'
+        type: 'GAD7'
+        score: 8
+    visits: []
+    recommendations: []

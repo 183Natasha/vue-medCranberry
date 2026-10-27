@@ -1,12 +1,30 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="ru">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vite App</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue Roles App</title>
   </head>
   <body>
     <div id="app"></div>
+    <!-- Раннее применение темы: выполняется ДО инициализации Vue, чтобы
+         на любой странице (включая /login) классы темы уже были на <html>
+         при первом рендере — иначе иконка переключателя на форме логина
+         инициализируется как светлая (классы применяет App.vue в onMounted,
+         что позже, чем setup LoginView). -->
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('ui-settings');
+          var mode = saved ? (JSON.parse(saved).themeMode || null) : null;
+          var r = document.documentElement;
+          r.classList.toggle('theme-dark', mode === 'dark');
+          r.classList.toggle('theme-calc', mode === 'calculator');
+        } catch (e) {
+          /* битый JSON — тема по умолчанию (светлая) */
+        }
+      })();
+    </script>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
