@@ -1,10 +1,24 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-import './style.css'
+import { loadAppConfig, logSettings } from './services/app-config'
+import { flushToFile, preloadClientIp } from './services/audit'
+import './assets/main.css'
 
-const app = createApp(App)
+async function bootstrap(): Promise<void> {
+  // Базовый конфиг (settings.yaml) грузим ДО монтирования:
+  // аудит-лог уже знает режим работы (enabled / localstorage | file).
+  // IP клиента запрашиваем параллельно — успеет до первых событий.
+  preloadClientIp()
+  await loadAppConfig()
 
-app.use(router)
+  const app = createApp(App)
+  app.use(router)
+  await router.isReady()
+  app.mount('#app')
 
-app.mount('#app')
+  // Если режим file — досылаем батч, который мог накопиться до загрузки
+  if (logSettings().mode === 'file') flushToFile()
+}
+
+bootstrap()

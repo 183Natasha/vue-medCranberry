@@ -1,0 +1,29 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: medcab-backend
+    restart: unless-stopped
+    environment:
+      PORT: 3001
+    volumes:
+      # ВАЖНО: монтируем каталог целиком, а не один файл.
+      # db.yaml пишется атомарно (tmp → rename), а rename поверх
+      # одиночного файлового маунта невозможен (EBUSY).
+      - ./server:/app/server
+      # логи аудита
+      - ./logs:/app/logs
+    expose:
+      - "3001"          # только внутри docker-сети, наружу не публикуем
+
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    container_name: medcab-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"         # при желании сразу "443:443" (после настройки TLS)
+    depends_on:
+      - backend

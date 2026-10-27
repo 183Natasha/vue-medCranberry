@@ -1,0 +1,7 @@
+node_modules
+dist
+logs
+server/db.yaml
+server/db.example.yaml
+.git
+*.bak

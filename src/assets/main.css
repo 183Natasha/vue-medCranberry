@@ -1,0 +1,1120 @@
+/* ===== Дизайн-токены ===== */
+:root {
+  --bg: #f1f5f9;
+  --card: #ffffff;
+  --border: #e2e8f0;
+  --text: #0f172a;
+  --muted: #64748b;
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+  --primary-soft: #eef2ff;
+  --danger: #ef4444;
+  --ok: #10b981;
+  --warn: #f59e0b;
+  --radius: 12px;
+  /* Поля ввода и нейтральные подложки (тихий фон внутри карточек) */
+  --field: #ffffff;
+  --surface: #f8fafc;
+  --row-hover: #f8fafc;
+  /* Фон/текст нейтрального бейджа и бейджей ролей */
+  --badge-bg: #e2e8f0;
+  --badge-text: #334155;
+  --badge-admin-bg: #fef3c7;  --badge-admin-text: #b45309;
+  --badge-doctor-bg: #dcfce7; --badge-doctor-text: #15803d;
+  --badge-patient-bg: #dbeafe; --badge-patient-text: #1d4ed8;
+  /* Производные семантические пары (фон-подложка + читаемый текст)
+     для бейджей и предупреждений; переопределяются в режимах цветовой слепоты */
+  --ok-soft: #dcfce7;
+  --ok-text: #166534;
+  --warn-soft: #fef3c7;
+  --warn-text: #92400e;
+  --danger-soft: #fee2e2;
+  --danger-text: #991b1b;
+  /* Линии графиков с несколькими сериями (HADS-A / HADS-D) */
+  --chart-a: #e11d48;
+  --chart-b: #2563eb;
+
+  /* ===== Отступы (единая шкала) =====
+     Все «похожие по смыслу» элементы берут значения из одной шкалы:
+       --sp-1..--sp-8 — базовая сетка (4px);
+       --pad-card     — внутренние поля карточек;
+       --gap-control  — промежутки между полями форм;
+       --pad-nav      — горизонтальные отступы меню;
+       --margin-block — отступ между смысловыми блоками (карточками). */
+  --sp-1: 4px;   /* микро: черта, мелкий gap */
+  --sp-2: 8px;   /* внутристрочные: кнопки, подписи */
+  --sp-3: 12px;  /* поля контролов, ячейки таблиц */
+  --sp-4: 16px;  /* заголовок блока → содержимое */
+  --sp-5: 20px;  /* между блоками одной карточки */
+  --sp-6: 24px;  /* внутренние поля карточек */
+  --sp-7: 32px;  /* секции страницы */
+  --sp-8: 40px;  /* нижний «воздух» страницы */
+  --pad-card: var(--sp-6);
+  --gap-control: var(--sp-3);
+  --pad-nav: 10px;
+  --margin-block: var(--sp-5);
+
+  /* ===== Палитра сайдбара ===== */
+  /* Отдельный набор токенов: сайдбар — самая «плотная» поверхность каркаса,
+     у него свои пары фон/текст. Переопределяются в .theme-dark / .theme-calc. */
+  --sb-bg: #ffffff;
+  --sb-border: #e2e8f0;
+  --sb-text: #334155;
+  --sb-text-strong: #0f172a;
+  --sb-text-faint: #64748b;
+  --sb-hover: rgb(100 116 139 / 8%);
+  --sb-hover-strong: rgb(100 116 139 / 14%);
+  --sb-active-alpha: rgba(99,102,241,0.15);
+  --sb-active-text: #4338ca;
+  --sb-config-active-text: #4f46e5;
+  --sb-scrollbar: rgb(100 116 139 / 30%);
+}
+
+/* ===== Пользовательские настройки интерфейса (SettingsView) =====
+   Масштаб шрифта, темы и плотность управляются классами
+   на <html> и переменной --font-scale, которую задаёт SettingsView.
+   Темы: светлая (по умолчанию), .theme-dark, .theme-calc (палитра calculator). */
+:root { --font-scale: 1; }
+
+/* Применение пользовательских настроек (всегда на body, не только в .app) */
+body { font-size: calc(16px * var(--app-font-scale, 1)); }
+
+/* Тёмная тема: переменные задаёт SettingsView через класс .theme-dark на <html> */
+:root.theme-dark {
+  --bg: #0f111a;
+  --card: #1a1d29;
+  --border: #2a2e3d;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --primary-soft: #232946;
+  --field: #232737;
+  --surface: #20242f;
+  --row-hover: #20242f;
+  --badge-bg: #2a2e3d;
+  --badge-text: #cbd5e1;
+  --badge-admin-bg: #3a2d10;  --badge-admin-text: #fcd34d;
+  --badge-doctor-bg: #12362a; --badge-doctor-text: #6ee7b7;
+  --badge-patient-bg: #16294a; --badge-patient-text: #93c5fd;
+  --ok-soft: #123a2e;
+  --ok-text: #6ee7b7;
+  --warn-soft: #3a2d10;
+  --warn-text: #fcd34d;
+  --danger-soft: #3b1a1a;
+  --danger-text: #fca5a5;
+  /* Сайдбар в тёмной теме: ведём палитру от той же #12141c,
+     что была в старом оверрайде фона */
+  --sb-bg: #12141c;
+  --sb-border: rgb(255 255 255 / 8%);
+  --sb-text: #cbd5e1;
+  --sb-text-strong: #f8fafc;
+  --sb-text-faint: #94a3b8;
+  --sb-hover: rgba(255,255,255,0.08);
+  --sb-hover-strong: rgba(255,255,255,0.16);
+  --sb-active-alpha: rgba(99,102,241,0.35);
+  --sb-active-text: #e0e7ff;
+  --sb-config-active-text: #a5b4fc;
+  --sb-scrollbar: rgba(255,255,255,0.15);
+}
+/* Тёмная тема: нативные контролы (календарь, скроллбары, чекбоксы)
+   рендерятся в тёмной палитре браузера */
+:root.theme-dark { color-scheme: dark; }
+
+/* ===== ТЕМА «КЛЮКОВКА» (внутр. id: theme-calc / 'calculator') =====
+   Палитра взята из public-проекта github.com/Operator2024/calculator (style.scss):
+   фон — линейный градиент #a6c0fe → #f68084; подложка — #333131;
+   кнопки — gray, hover #f68084, active #aa595b; текст — #FAFAFA.
+   Это тёмная тема с голубо-розовыми акцентами: акцентные элементы
+   (активная ссылка, .btn-primary, .tr.selected, scale-result, notif-info)
+   получают градиент через --acc-* / background-image. */
+:root.theme-calc {
+  color-scheme: dark;
+  --bg: #a6c0fe; /* фолбэк; фактический фон — градиент на .app (см. ниже) */
+  --card: #333131;
+  --border: rgba(166, 192, 254, 0.35);
+  --text: #FAFAFA;
+  --muted: #cbd5e1;
+  --primary: #f68084;
+  --primary-dark: #e0666b;
+  --primary-soft: #46413e;
+  --danger: #f87171;
+  --ok: #6ee7b7;
+  --warn: #fcd34d;
+  --field: #3d3a3a;
+  --surface: #3d3a3a;
+  --row-hover: #46413e;
+  --field-border: rgba(166, 192, 254, 0.4);
+  /* Бейджи: мягкие тёмные пары с голубым/розовым оттенком */
+  --badge-bg: #413d3d;  --badge-text: #e2e8f0;
+  --badge-admin-bg: #4a3d22;  --badge-admin-text: #fcd34d;
+  --badge-doctor-bg: #27443a; --badge-doctor-text: #6ee7b7;
+  --badge-patient-bg: #2c3a52; --badge-patient-text: #a6c0fe;
+  --ok-soft: #27443a;   --ok-text: #6ee7b7;
+  --warn-soft: #4a3d22; --warn-text: #fcd34d;
+  --danger-soft: #4a2c30; --danger-text: #f87171;
+  --chart-a: #f68084; --chart-b: #a6c0fe;
+  /* Акцент (градиент) — кнопки, активная ссылка, выделенная строка, scale-result */
+  --acc-a: #a6c0fe; --acc-b: #f68084;
+  --acc-text: #ffffff;
+  /* Кнопка (паттерн темы «Клюковка»): серая подложка, hover #f68084, active #aa595b */
+  --calc-btn-bg: #6b6b6b;
+  --calc-btn-hover: #f68084;
+  --calc-btn-active: #aa595b;
+  /* Сайдбар: тёмный, как подложка #333131, но чуть темнее для каркаса */
+  --sb-bg: #2a2828;
+  --sb-border: rgba(166, 192, 254, 0.25);
+  --sb-text: #e2e8f0;
+  --sb-text-strong: #FAFAFA;
+  --sb-text-faint: #94a3b8;
+  --sb-hover: rgba(166, 192, 254, 0.10);
+  --sb-hover-strong: rgba(166, 192, 254, 0.18);
+  --sb-active-text: #a6c0fe;
+  --sb-config-active-text: #a6c0fe;
+  --sb-scrollbar: rgba(166, 192, 254, 0.30);
+}
+/* Акцентные элементы в теме «Клюковка»: градиент вместо сплошного primary
+   (активная ссылка, .btn-primary, .test-mode-btn.active) */
+:root.theme-calc .sidebar-link.router-link-active,
+:root.theme-calc .btn-primary,
+:root.theme-calc .test-mode-btn.active {
+  background-image: linear-gradient(120deg, var(--acc-a) 0%, var(--acc-b) 100%);
+  border-color: transparent;
+  color: var(--acc-text);
+}
+:root.theme-calc .btn-primary:hover {
+  background-image: linear-gradient(120deg, var(--acc-b) 0%, var(--acc-a) 100%);
+}
+/* Кнопочный паттерн темы «Клюковка»: нейтральные/ghost-кнопки
+   получают серую подложку + розовый hover + сплющенный active */
+:root.theme-calc .btn:not(.btn-primary):not(.btn-danger) {
+  background: var(--calc-btn-bg);
+  color: #FAFAFA;
+  border: 1px solid rgba(166, 192, 254, 0.3);
+}
+:root.theme-calc .btn:not(.btn-primary):not(.btn-danger):hover {
+  background: var(--calc-btn-hover);
+}
+:root.theme-calc .btn:not(.btn-primary):not(.btn-danger):active {
+  background: var(--calc-btn-active);
+}
+/* Выбранная строка/плашка — акцентный градиент */
+:root.theme-calc tr.selected td,
+:root.theme-calc .scale-result {
+  background-image: linear-gradient(120deg, rgba(166, 192, 254, 0.25) 0%, rgba(246, 128, 132, 0.22) 100%) !important;
+}
+/* Поля ввода с голубой рамкой (сигнатура темы) */
+:root.theme-calc input,
+:root.theme-calc select,
+:root.theme-calc textarea {
+  border-color: var(--field-border);
+}
+/* Фокус полей — голубое кольцо */
+:root.theme-calc input:focus,
+:root.theme-calc select:focus,
+:root.theme-calc textarea:focus {
+  outline-color: #a6c0fe;
+  border-color: #a6c0fe;
+}
+/* Нейтральный градиент для «подложки-обложки» (пасхалка) */
+:root.theme-calc .egg-box {
+  background: linear-gradient(160deg, #333131 0%, #46413e 100%);
+}
+/* Градиентный фон страницы (120deg, как у исходной палитры калькулятора) */
+:root.theme-calc .app {
+  background: linear-gradient(120deg, #a6c0fe 0%, #f68084 100%);
+  background-attachment: fixed;
+}
+
+/* ===== Режим цветовой слепоты (классы на <html>: .cvd-protanopia / .cvd-deuteranopia / .cvd-tritanopia)
+   Задаёт SettingsView. Палитра Okabe–Ito — универсально различима
+   при протанопии, дейтеранопии и тританопии:
+     успех = сине-зелёный, внимание = оранжевый, опасность = вермильон,
+     основной = синий; серии графиков = синий / оранжевый. */
+:root.cvd-protanopia,
+:root.cvd-deuteranopia,
+:root.cvd-tritanopia {
+  --primary: #0072b2;
+  --primary-dark: #005a8f;
+  --primary-soft: #e0effa;
+  --ok: #009e73;
+  --ok-soft: #d9f2ec;
+  --ok-text: #00795a;
+  --warn: #e69f00;
+  --warn-soft: #fdf0d2;
+  --warn-text: #8a5f00;
+  --danger: #d55e00;
+  --danger-soft: #fbe3d4;
+  --danger-text: #a34400;
+  --chart-a: #0072b2;
+  --chart-b: #e69f00;
+}
+/* Тёмная тема + цветовая слепота: те же цвета, но мягкие пары затемнены */
+:root.theme-dark.cvd-protanopia,
+:root.theme-dark.cvd-deuteranopia,
+:root.theme-dark.cvd-tritanopia {
+  --ok-soft: #0d3529;
+  --ok-text: #7fe0c3;
+  --warn-soft: #362a0d;
+  --warn-text: #ffd98a;
+  --danger-soft: #381d0b;
+  --danger-text: #ffb28a;
+  --primary-soft: #12293d;
+}
+/* Тема «Клюковка» + цветовая слепота: сохраним различимые акценты, но
+   мягкие пары и серии графиков берём из палитры Okabe–Ito (см. выше) */
+:root.theme-calc.cvd-protanopia,
+:root.theme-calc.cvd-deuteranopia,
+:root.theme-calc.cvd-tritanopia {
+  --primary: #0072b2;
+  --primary-dark: #005a8f;
+  --primary-soft: #10394f;
+  --ok: #009e73;
+  --ok-soft: #0d3529;
+  --ok-text: #7fe0c3;
+  --warn: #e69f00;
+  --warn-soft: #362a0d;
+  --warn-text: #ffd98a;
+  --danger: #d55e00;
+  --danger-soft: #381d0b;
+  --danger-text: #ffb28a;
+  --chart-a: #0072b2;
+  --chart-b: #e69f00;
+  --acc-a: #0072b2; --acc-b: #e69f00;
+}
+
+/* Плотность: класс .density-compact на <html> — уменьшаем отступы */
+:root.density-compact .card { padding: 16px 20px; }
+
+/* ===== База ===== */
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* ===== Каркас приложения ===== */
+.app { min-height: 100vh; display: flex; flex-direction: column; }
+/* Любой контент не должен вылезать за вьюпорт по горизонтали.
+   Локальные overflow-x: auto уже обеспечивают скролл там, где нужно
+   (таблицы, графики); эта строчка — страховка от «езды» блоков на мобильных. */
+body { overflow-x: hidden; }
+
+/* Страница логина: сайдбара нет — контент на всю ширину.
+   Важна позиция ПОСЛЕ .app-collapsed-правил: равная специфичность,
+   побеждает последнее (иначе свёрнуто-сохранённое состояние давало 72px отступ) */
+.app.app-no-sidebar .app-body,
+.app.app-no-sidebar.app-collapsed .app-body { padding-left: 0; }
+/* Футер без сайдбара (логин): содержимое на всю ширину, без «места под меню» слева */
+.app.app-no-sidebar .footer .container { max-width: none; }
+
+/* Обёртка контента рядом с сайдбаром: отступ слева под расширенное меню,
+   при сворачивании отступ уменьшается (transition синхронизирован с сайдбаром) */
+.app-body {
+  display: flex; flex: 1; min-height: 0;
+  padding-left: 240px; transition: padding-left 0.2s ease;
+}
+/* Отступ = ширина сайдбара (240px расширенный / 72px свёрнутый) — вплотную, без зазора */
+.app.app-collapsed .app-body { padding-left: 72px; }
+.app-content { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+.container { max-width: var(--ui-content-max, 960px); margin: 0 auto; padding: 0 var(--sp-5); width: 100%; min-width: 0; }
+.main { flex: 1; padding-top: var(--sp-7); padding-bottom: var(--sp-8); }
+
+/* ===== Шапка ===== */
+.header { background: var(--card); border-bottom: 1px solid var(--border); }
+.header-inner { display: flex; align-items: center; gap: 20px; height: 60px; }
+.logo { font-weight: 700; font-size: 18px; text-decoration: none; color: var(--text); display: inline-flex; align-items: center; gap: 8px; }
+.logo span { white-space: nowrap; }
+
+.user-box { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.user-name { font-size: 14px; color: var(--muted); }
+
+/* ===== Сайдбар (как в облачных панелях: логотип, кнопка сворачивания, навигация) ===== */
+.sidebar {
+  position: fixed; top: 0; left: 0; bottom: 0; z-index: 40;
+  width: 240px; background: var(--sb-bg); color: var(--sb-text);
+  display: flex; flex-direction: column;
+  border-right: 1px solid var(--sb-border);
+  transition: width 0.2s ease;
+}
+.sidebar-header {
+  height: 60px; display: flex; align-items: center; gap: 10px; padding: 0 14px;
+  border-bottom: 1px solid var(--sb-border); flex-shrink: 0;
+}
+.sidebar-logo { font-weight: 700; font-size: 15px; text-decoration: none; color: var(--sb-text-strong); white-space: nowrap; overflow: hidden; }
+.sidebar-collapse {
+  margin-left: auto; width: 28px; height: 28px; border-radius: 6px; flex-shrink: 0;
+  background: var(--sb-hover); border: none; color: var(--sb-text-faint);
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: 0.15s;
+}
+.sidebar-collapse:hover { background: var(--sb-hover-strong); color: var(--sb-text-strong); }
+.sidebar-nav { padding: var(--sp-3) var(--pad-nav); display: flex; flex-direction: column; gap: var(--sp-1); overflow-y: auto; flex: 1; }
+/* Навигация «Настройки» — не растягивается (иначе делит сайдбар пополам
+   с главной навигацией и обрезает подменю «Разделы приёма») */
+.sidebar-nav-settings { flex: 0 0 auto; padding: var(--sp-1) var(--pad-nav) var(--sp-3); }
+/* Дочерние элементы главной навигации не сжимаются при нехватке места */
+.sidebar-nav > * { flex-shrink: 0; }
+.sidebar-link {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 12px; border-radius: 8px; text-decoration: none;
+  color: var(--sb-text); font-size: 14px; white-space: nowrap; overflow: hidden;
+  transition: 0.15s;
+}
+.sidebar-link:hover { background: var(--sb-hover); color: var(--sb-text-strong); }
+.sidebar-link.router-link-active { background: #6366f1; color: #fff; font-weight: 600; }
+
+/* ─── Подменю (вложенное оглавление, напр. «Приёмы» у врача) ─── */
+.sidebar-link-parent { cursor: pointer; user-select: none; }
+.sidebar-link-parent .chev {
+  margin-left: auto; font-size: 11px; color: var(--sb-text-faint);
+  transition: transform 0.2s; transform: rotate(0deg);
+}
+.sidebar-link-parent.open .chev { transform: rotate(90deg); color: var(--sb-text-strong); }
+.sidebar-link-parent.active { background: var(--sb-active-alpha); color: var(--sb-active-text); }
+
+.sidebar-submenu {
+  max-height: 0; overflow: hidden; opacity: 0;
+  transition: max-height 0.25s ease, opacity 0.2s ease;
+}
+.sidebar-submenu.open { max-height: 480px; opacity: 1; }
+
+.sidebar-sublink {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 12px 6px 30px; border-radius: 6px; text-decoration: none;
+  color: var(--sb-text-faint); font-size: 13px; cursor: pointer; white-space: nowrap; overflow: hidden;
+  transition: 0.15s;
+}
+.sidebar-sublink:hover { background: var(--sb-hover); color: var(--sb-text-strong); }
+.sidebar-sublink:active { background: var(--sb-active-alpha); color: var(--sb-active-text); }
+.sidebar-sublink.disabled { opacity: 0.4; pointer-events: none; }
+.sidebar-sublink .badge { margin-left: 4px; }
+
+.sidebar-subgroup { margin: 4px 0 2px; }
+.sidebar-sublabel {
+  font-size: 10px; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--sb-text-faint); padding: 8px 12px 4px 30px;
+}
+
+/* Мини-бейдж внутри подменю */
+.badge.badge-mini { font-size: 10px; padding: 1px 7px; }
+
+/* ─── Настройка видимости разделов приёма (в подменю врача) ─── */
+.sidebar-sublink-config { color: var(--sb-text-faint); font-style: italic; }
+.sidebar-sublink-config.config-active {
+  color: var(--sb-config-active-text); font-style: normal; font-weight: 600;
+  background: var(--sb-active-alpha);
+}
+/* Строка «пункт + глазок» */
+.sidebar-subitem { display: flex; align-items: center; position: relative; }
+.sidebar-subitem .sidebar-sublink { flex: 1 1 auto; min-width: 0; }
+/* Кнопка-глаз: в режиме настройки появляется при наведении на строку,
+   у скрытого раздела — видна всегда (перечёркнутая) */
+.eye-btn {
+  flex: 0 0 auto; margin-left: auto; padding: 2px 4px; margin-right: 6px;
+  border: none; background: transparent; cursor: pointer; border-radius: 4px;
+  font-size: 13px; line-height: 1; color: var(--sb-text);
+  opacity: 0; transition: opacity 0.12s;
+  position: relative;
+}
+.sidebar-subitem:hover .eye-btn,
+.eye-btn.crossed { opacity: 1; }
+.eye-btn:hover { background: var(--sb-hover-strong); }
+.eye-btn:disabled { cursor: not-allowed; opacity: 0.55 !important; }
+/* Перечёркнутый глаз: диагональная черта поверх */
+.eye-btn.crossed { color: var(--sb-text-faint); }
+.eye-btn.crossed::after {
+  content: ''; position: absolute; left: 2px; right: 2px; top: 50%;
+  height: 1.5px; background: #f87171; transform: rotate(-35deg); border-radius: 2px;
+}
+/* Скрытый пункт — серая подсветка строки */
+.sidebar-subitem.subitem-hidden .sidebar-sublink {
+  color: var(--sb-text-faint); background: var(--sb-hover); border-radius: 6px;
+}
+.sidebar-subitem.subitem-hidden .sidebar-sublink .badge { opacity: 0.5; }
+
+/* Панель-редактор (устаревшее) — заменена глазками */
+.sidebar-config { display: none; }
+
+/* ─── Сворачиваемые секции формы приёма (врач) ───
+   fieldset с legend или section.card с h2 управляются кликом по заголовку;
+   состояние хранится в ui-sections.ts (общее для сайдбара и DoctorView) */
+.collapsible-sec.closed > *:not(legend):not(h2) { display: none; }
+
+/* ─── ЕДИНЫЙ КЛАСС СЕКЦИИ ПРИЁМА ─── .visit-section ───
+   Один класс для всех смысловых блоков формы приёма — независимо от того,
+   на чём основан блок: fieldset (Жалобы, Анамнезы, Статусы, PHQ-4)
+   или section (Тестирование, Диагноз, Дообследование, Лечение).
+   Даёт одинаковую рамку, поля и отступ между секциями (var(--margin-block)).
+   Класс применяется прямо в шаблонах при отрисовке блока. */
+.visit-section {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 16px;
+  margin: 0 0 var(--margin-block);
+  min-width: 0;
+}
+.visit-section > legend { font-weight: 600; padding: 0 6px; }
+/* fieldset не должен переполнять .card на мобильных */
+fieldset { min-width: 0; }
+/* В свёрнутом виде высота как у fieldset-варианта */
+.visit-section.closed { min-height: 42px; }
+legend.collapsible-legend { cursor: pointer; user-select: none; }
+legend.collapsible-legend { display: flex; align-items: center; gap: 6px; padding: 0 6px; flex-wrap: wrap; }
+legend.collapsible-legend:hover { color: var(--primary-dark); }
+.collapsible-chev {
+  font-size: 12px; color: var(--muted);
+  transition: transform 0.2s; display: inline-block;
+}
+.collapsible-chev.closed { transform: rotate(-90deg); }
+.legend-badges { margin-left: 8px; display: inline-flex; gap: 6px; }
+
+/* Ручной ввод теста внутри блока «Тестирование» */
+.manual-test-box { margin-top: 18px; }
+
+/* Переключатель режимов блока «Тестирование»: Пройти тест / Заполнить вручную */
+.test-mode-switch { display: flex; gap: 10px; margin: 6px 0 16px; flex-wrap: wrap; }
+.test-mode-btn {
+  flex: 0 1 auto; background: var(--card); border: 1px solid var(--border); color: var(--muted);
+}
+.test-mode-btn:hover { background: var(--bg); color: var(--text); }
+.test-mode-btn.active {
+  background: var(--primary); border-color: var(--primary); color: #fff; font-weight: 600;
+}
+.test-mode-hint { margin: 4px 0 0; font-size: 13px; }
+.form-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* ─── Модальное окно (запрос удаления приёма) ─── */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 60;
+  background: rgb(15 23 42 / 45%);
+  display: flex; align-items: center; justify-content: center;
+  padding: 16px;
+}
+.modal-box {
+  width: 100%; max-width: 440px; margin: 0;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.modal-box h3 { margin: 0; }
+.modal-box label { display: flex; flex-direction: column; gap: 4px; font-size: 14px; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 4px; }
+
+/* ─── Страница приёма: шапка (пациент + режим + навигация) ─── */.visit-head { margin-bottom: 14px; }
+.visit-head-row {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+}
+/* Заголовок растягивается и переносит сам текст — кнопки всегда
+   справа на одной линии с ним, по вертикальному центру строки.
+   margin обнуляем: иначе flex центрирует заголовок вместе с его
+   нижним отступом (.card h2) и текст визуально уезжает вверх. */
+.visit-head .visit-head-row h2 {
+  margin: 0; flex: 1 1 auto; min-width: 0;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.visit-head-date { display: flex; align-items: center; flex-shrink: 0; }
+/* Компактный инпут даты в шапке: подпись и поле на одной строке */
+.visit-head-date .date-inline {
+  flex-direction: row; align-items: center; gap: 8px;
+  font-size: 14px; color: var(--muted); white-space: nowrap;
+}
+.visit-head-date .date-inline input { padding: 6px 10px; font-size: 13px; }
+.visit-head-nav { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+/* Узкий экран: дата и кнопки переносятся под заголовок и центрируются */
+@media (max-width: 700px) {
+  .visit-head-row { flex-direction: column; align-items: center; }
+  .visit-head-row h2 { text-align: center; justify-content: center; }
+  .visit-head-row .visit-head-date + .visit-head-nav { margin-top: 0; }
+}
+@media (max-width: 420px) {
+  .visit-head-nav { flex-wrap: wrap; justify-content: center; }
+}
+.readonly-badge { background: var(--primary-soft); color: var(--primary-dark); }
+
+/* Обёртка формы приёма: в readonly — disabled fieldset без рамки */
+fieldset.visit-form-body {
+  border: 0; padding: 0; margin: 0; min-width: 0;
+}
+.visit-readonly :is(input, textarea, select) {
+  background: transparent; color: var(--text);
+}
+
+/* ─── Панель действий формы приёма: Сохранить + Экспорт ─── */
+.visit-actions {
+  display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap;
+  margin: var(--sp-6) 0 var(--sp-2);
+}
+.export-wrap { position: relative; display: inline-block; }
+.export-menu {
+  position: absolute; top: calc(100% + 6px); left: 0; z-index: 30;
+  background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+  box-shadow: 0 8px 24px rgb(15 23 42 / 14%); min-width: 190px;
+  display: flex; flex-direction: column; padding: 6px;
+}
+.export-menu button {
+  appearance: none; border: none; background: transparent; cursor: pointer;
+  text-align: left; padding: 9px 12px; font-size: 14px; color: var(--text);
+  border-radius: 7px; font-family: inherit;
+}
+.export-menu button:hover { background: var(--primary-soft); color: var(--primary-dark); }
+
+/* В свёрнутом режиме подменю не показываем — только иконку родителя */
+.app.app-collapsed .sidebar-submenu { display: none; }
+.app.app-collapsed .sidebar-link-parent .chev { display: none; }
+
+/* Скроллбары для сайдбара с длинным подменю */
+.sidebar-nav { scrollbar-width: thin; scrollbar-color: var(--sb-scrollbar) transparent; }
+.sidebar-nav::-webkit-scrollbar { width: 4px; }
+.sidebar-nav::-webkit-scrollbar-thumb { background: var(--sb-scrollbar); border-radius: 4px; }
+.sidebar-link .icon { font-size: 18px; width: 24px; text-align: center; flex-shrink: 0; }
+.sidebar-link .text { overflow: hidden; text-overflow: ellipsis; }
+.sidebar-footer {
+  padding: 12px 14px; border-top: 1px solid var(--sb-border);
+  display: flex; align-items: center; gap: 10px;
+}
+.sidebar-avatar {
+  width: 34px; height: 34px; border-radius: 50%; background: #6366f1; color: #fff;
+  display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; flex-shrink: 0;
+}
+:root.theme-calc .sidebar-avatar {
+  background: linear-gradient(120deg, var(--acc-a) 0%, var(--acc-b) 100%);
+}
+.sidebar-user { min-width: 0; }
+.sidebar-user .name { font-size: 13px; color: var(--sb-text-strong); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sidebar-user .role { font-size: 11px; color: var(--sb-text-faint); }
+
+/* Свёрнутое состояние: иконки без текста */
+.app.app-collapsed .sidebar { width: 72px; }
+.app.app-collapsed .sidebar-logo,
+.app.app-collapsed .sidebar-link .text,
+.app.app-collapsed .sidebar-user { display: none; }
+.app.app-collapsed .sidebar-header { justify-content: center; padding: 0; }
+.app.app-collapsed .sidebar-collapse { margin-left: 0; }
+.app.app-collapsed .sidebar-link { justify-content: center; padding: 10px 0; }
+.app.app-collapsed .sidebar-footer { justify-content: center; padding: 12px 8px; }
+.app.app-collapsed .sidebar-footer .btn { display: none; }
+
+/* Тултипы в свёрнутом режиме */
+.app.app-collapsed .sidebar-link { position: relative; }
+.app.app-collapsed .sidebar-link::after {
+  content: attr(data-tip);
+  position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%);
+  background: #0f172a; color: #f1f5f9; font-size: 12px; white-space: nowrap;
+  padding: 6px 10px; border-radius: 6px;
+  opacity: 0; pointer-events: none; transition: opacity 0.15s;
+}
+:root.theme-calc .app.app-collapsed .sidebar-link::after {
+  background: #333131; color: #FAFAFA; border: 1px solid rgba(166, 192, 254, 0.4);
+}
+.app.app-collapsed .sidebar-link:hover::after { opacity: 1; }
+
+/* ===== Бейджи ролей ===== */
+.badge { font-size: 11px; padding: 3px 10px; border-radius: 999px; font-weight: 600; }
+.badge.admin { background: var(--badge-admin-bg); color: var(--badge-admin-text); }
+.badge.doctor { background: var(--badge-doctor-bg); color: var(--badge-doctor-text); }
+.badge.patient { background: var(--badge-patient-bg); color: var(--badge-patient-text); }
+
+/* Высота футера = высота sidebar-footer (58px = 34px контент + 12px паддинги сверху/снизу) */
+.footer {
+  min-height: 59px; box-sizing: border-box; padding: 12px 0;
+  display: flex; align-items: center;
+  color: var(--muted); font-size: 12px; border-top: 1px solid var(--border);
+}
+
+/* ===== Карточки ===== */
+.card {
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: var(--pad-card); margin-bottom: var(--margin-block); box-shadow: 0 1px 3px rgb(15 23 42 / 5%);
+  min-width: 0;
+}
+.card h2 { margin: 0 0 var(--sp-4); font-size: 18px; word-break: break-word; }
+
+/* ===== Формы ===== */
+/* min-width: 0 — чтобы flex/grid-родитель (.card, .visit-section) позволял
+   форме сжиматься до доступной ширины и не «вырастал» за неё. */
+.form { display: flex; flex-direction: column; gap: var(--gap-control); max-width: 420px; width: 100%; min-width: 0; }
+/* Широкая форма (новый приём): смысловые блоки на всю ширину */
+.form-wide { max-width: none; }
+.form-wide .complaints-cols { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.form-wide .complaints-free textarea { min-height: 160px; }
+/* Совпадает с брейкпоинтом мобильного меню (760px): две колонки жалоб
+   складываются в одну раньше, чем layout становится мобильным — иначе на
+   планшетах 761–900px колонки уже двойные, а каркас уже «телефонный». */
+@media (max-width: 760px) { .form-wide .complaints-cols { grid-template-columns: minmax(0, 1fr); } }
+label { font-size: 13px; color: var(--muted); display: flex; flex-direction: column; gap: 4px; }
+input, select, textarea {
+  padding: 9px var(--sp-3); border: 1px solid var(--border); border-radius: 8px; font-size: 14px;
+  font-family: inherit; background: var(--field); color: var(--text);
+}
+input:focus, select:focus, textarea:focus { outline: 2px solid #c7d2fe; border-color: var(--primary); }
+:root.theme-dark input:focus, :root.theme-dark select:focus, :root.theme-dark textarea:focus { outline-color: #4f46e5; }
+
+/* ===== Кнопки ===== */
+.btn {
+  padding: 9px 16px; border: none; border-radius: 8px; font-size: 14px; cursor: pointer;
+  font-weight: 600; transition: 0.15s;
+  /* Кнопки-ссылки (RouterLink → <a>) не подчёркиваются и выглядят как обычные кнопки */
+  text-decoration: none;
+  color: var(--text);
+  display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+}
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:hover { background: var(--primary-dark); }
+.btn-ghost { background: transparent; color: var(--muted); }
+.btn-ghost:hover { background: var(--bg); color: var(--text); }
+.btn-danger { background: var(--danger-soft); color: var(--danger); }
+.btn-danger:hover { background: var(--danger); color: #fff; }
+.btn-sm { padding: 5px 10px; font-size: 12px; }
+
+/* ===== Таблицы ===== */
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th {
+  text-align: left; color: var(--muted); font-size: 12px;
+  text-transform: uppercase; letter-spacing: .04em;
+}
+th, td { padding: var(--sp-2) var(--sp-3); border-bottom: 1px solid var(--border); }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--row-hover); }
+
+/* ===== Пасхалка: модалка копирайта (5 быстрых кликов по логотипу) ===== */
+.egg-overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgb(15 23 42 / 55%); backdrop-filter: blur(3px);
+  display: flex; align-items: center; justify-content: center;
+  animation: egg-fade 0.2s ease;
+}
+.egg-box {
+  position: relative; text-align: center;
+  background: linear-gradient(160deg, #ffffff 0%, #eef2ff 60%, #e0e7ff 100%);
+  border: 1px solid var(--border); border-radius: 16px;
+  padding: 36px 48px 28px; max-width: 360px; width: calc(100% - 40px);
+  box-shadow: 0 20px 60px rgb(15 23 42 / 25%);
+  animation: egg-pop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+:root.theme-dark .egg-box {
+  background: linear-gradient(160deg, #1a1d29 0%, #232946 100%);
+}
+.egg-icon { width: 64px; height: 64px; object-fit: contain; }
+.egg-icon-fallback { font-size: 52px; line-height: 1; display: inline-block; }
+/* Пасхалка-2: кликабельная клюква (3 клика → тема «Клюковка» в настройках) */
+.egg-berry { cursor: pointer; transition: transform 0.15s; user-select: none; }
+.egg-berry:hover { transform: scale(1.12); }
+.egg-berry:active { transform: scale(0.94); }
+/* Разблокированная клюква — лёгкое свечение-подтверждение */
+.egg-berry.berry-unlocked { filter: drop-shadow(0 0 10px rgba(246, 128, 132, 0.7)); }
+.egg-berry-hint {
+  margin: 10px 0 0; font-size: 13px; font-weight: 600;
+  color: #f68084; animation: egg-fade 0.3s ease;
+}
+.egg-title { margin: 10px 0 6px; font-size: 20px; font-weight: 700; }
+.egg-text { margin: 4px 0; font-size: 14px; color: var(--muted); }
+.egg-sub { margin: 8px 0 0; font-size: 12px; color: var(--muted); }
+.egg-close {
+  position: absolute; top: 10px; right: 12px;
+  border: none; background: transparent; cursor: pointer;
+  color: var(--muted); font-size: 14px; padding: 4px 8px; border-radius: 6px;
+}
+.egg-close:hover { background: rgb(100 116 139 / 15%); color: var(--text); }
+@keyframes egg-pop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes egg-fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* ===== Страница логина ===== */
+.login-card { margin-top: 48px; margin-bottom: 48px; }
+.login-form { align-items: stretch; }
+.login-form .btn { align-self: center; min-width: 200px; margin-top: 4px; }
+
+/* ===== Адаптив: таблицы =====
+   Широкие таблицы (пациенты, история приёмов) скроллятся внутри карточки,
+   а не растягивают страницу. .patients-scroll — явная обёртка;
+   на узких экранах любой table внутри .card тоже скроллится. */
+.patients-scroll { overflow-x: auto; }
+.patients-scroll table { min-width: 560px; }
+
+/* ===== Адаптив: мобильная шапка =====
+   На узких экранах прячем имя пользователя (остаётся бейдж роли)
+   и уменьшаем промежутки, чтобы «Выйти» не выталкивало контент. */
+@media (max-width: 540px) {
+  .header-inner { gap: var(--sp-3); }
+  .user-box { gap: var(--sp-2); }
+  .user-name { display: none; }
+  .user-box .btn { padding: 7px 10px; font-size: 13px; }
+  .logo { font-size: 16px; }
+  .logo span { display: none; }
+  /* Инпут даты: на телефоне нативный datetime-local не сжимается,
+     ограничиваем ширину, чтобы не выталкивал соседние элементы */
+  .visit-head-date input { max-width: 180px; }
+}
+
+/* ===== Адаптив: таблицы внутри карточек (телефон) ===== */
+@media (max-width: 700px) {
+  .card table { display: block; overflow-x: auto; }
+  .collapsible-badges { flex-wrap: wrap; }
+  legend.collapsible-legend span { white-space: normal; }
+}
+
+/* ===== Утилиты ===== */
+.muted { color: var(--muted); }
+.error-text { color: var(--danger); font-size: 13px; }
+.success-text { color: var(--ok); font-size: 13px; }
+.grid-2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--sp-5); }
+/* Grid-элементы не шире трека (см. комментарий у .complaints-cols) */
+.grid-2 > * { min-width: 0; }
+
+/* ===== Состояние на приёме ===== */
+.cond-up { color: var(--ok); font-weight: 600; }
+.cond-same { color: var(--warn); font-weight: 600; }
+.cond-down { color: var(--danger); font-weight: 600; }
+
+/* ===== Выбранная строка ===== */
+tr.selected td { background: var(--primary-soft) !important; }
+
+/* ===== График (LineChart) ===== */
+/* Единая обёртка графиков — одинаковое оформление у врача и пациента */
+.chart-block { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; margin: 8px 0 14px; }
+.chart-block .line-chart { display: block; }
+.chart-hint { margin-top: -2px; margin-bottom: 6px; font-size: 13px; }
+
+.line-chart { width: 100%; height: auto; }
+.line-chart .grid { stroke: var(--border); stroke-width: 1; }
+.line-chart .line { fill: none; stroke: var(--primary); stroke-width: 2.5; }
+.line-chart .dot { fill: var(--primary); stroke: #fff; stroke-width: 2; }
+.line-chart .tick { font-size: 10px; fill: #94a3b8; }
+.line-chart .empty { font-size: 14px; fill: #cbd5e1; }
+:root.theme-calc .line-chart .dot { stroke: #333131; }
+:root.theme-calc .line-chart .tick { fill: #cbd5e1; }
+:root.theme-calc .line-chart .empty { fill: #e2e8f0; }
+
+@media (max-width: 700px) {
+  .grid-2 { grid-template-columns: 1fr; }
+}
+
+/* ===== Жалобы: критерии ГТР =====
+   Рамка/поля/отступы секции задаёт общий класс .visit-section (см. выше) */
+.criteria-group { margin-top: 12px; }
+.criteria-title { font-weight: 600; margin: 0 0 6px; font-size: 14px; }
+.checkbox { display: flex; flex-direction: row; align-items: flex-start; gap: 8px; font-size: 14px; margin: 4px 0; font-weight: 400; cursor: pointer; }
+/* флажок по центру первой строки текста (line-height ≈ 21px, чекбокс 13px) */
+.checkbox input { margin-top: 4px; flex: none; }
+
+/* ===== Прохождение шкал ===== */
+.question { margin: 14px 0; min-width: 0; }
+.question-text { font-weight: 600; margin: 0 0 8px; }
+.options { display: flex; flex-wrap: wrap; gap: 10px; width: 100%; }
+/* max-width: 100% — длинная подпись ("Более половины дней") не растягивает
+   радио-чип за пределы колонки; текст переносится, а не вылезает. */
+.radio { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 400; cursor: pointer; border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; flex: 1 1 auto; min-width: 0; max-width: 100%; }
+.radio span { min-width: 0; }
+.radio input { flex: none; margin: 0; }
+.scale-result { border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; background: var(--primary-soft); }
+
+/* ===== Жалобы: две колонки ===== */
+.complaints-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 20px; align-items: start; }
+/* Grid-элементы сжимаются до трека, а не до min-content содержимого
+   (длинные опции select'ов в секциях статуса не растягивают колонку) */
+.complaints-cols > * { min-width: 0; }
+.complaints-free textarea { height: 100%; min-height: 200px; }
+@media (max-width: 900px) { .complaints-cols { grid-template-columns: minmax(0, 1fr); } }
+
+/* ===== График: две серии ===== */
+.line-chart .line-c0 { stroke: var(--primary); }
+.line-chart .line-c1 { stroke: var(--chart-a); }
+
+/* ===== Критерии ГТР: подзаголовки ===== */
+.criteria-subtitle { font-weight: 600; margin: 10px 0 4px; font-style: italic; }
+
+/* ===== Модалки (объявлены глобально: используются AdminPanel и UsersView через Teleport) ===== */
+.admin-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+.admin-modal {
+  background: var(--surface, #fff);
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  width: 100%;
+  max-width: 480px;
+  padding: 18px 20px 20px;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+}
+.admin-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.admin-modal-head h3 { margin: 0; font-size: 15px; }
+.admin-modal-close {
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--muted, #888);
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+.admin-modal-close:hover { background: var(--row-hover, rgba(0, 0, 0, 0.06)); }
+
+/* ===== Модалки (объявлены глобально: используются AdminPanel и UsersView через Teleport) ===== */
+.admin-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+.admin-modal {
+  background: var(--surface, #fff);
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  width: 100%;
+  max-width: 480px;
+  padding: 18px 20px 20px;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+}
+.admin-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.admin-modal-head h3 { margin: 0; font-size: 15px; }
+.admin-modal-close {
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--muted, #888);
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+.admin-modal-close:hover { background: var(--row-hover, rgba(0, 0, 0, 0.06)); }
+
+/* ===== Системные уведомления (базовый шаблон, SystemNotifBanner) =====
+   Вариант A: цветная полоса слева + мягкий фон по severity (паттерн sig-warning-box).
+   Используют переменные тем (тёмная тема, режимы цветослепоты) автоматически. */
+.notif-banner {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.notif-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-left-width: 4px;
+  border-radius: 10px;
+  background: var(--surface);
+}
+.notif-item .notif-icon { font-size: 20px; line-height: 1.2; flex: none; }
+.notif-item .notif-body { min-width: 0; }
+.notif-item .notif-title { display: block; margin-bottom: 2px; }
+.notif-item .notif-text { margin: 2px 0 0; }
+.notif-item .notif-meta { font-size: 11px; margin: 4px 0 0; }
+
+/* Severity: info — фирменный, warning/critical — мягкие фоны (как у badge-**) */
+.notif-item.notif-info    { border-left-color: var(--primary); background: var(--primary-soft); }
+.notif-item.notif-warning { border-left-color: var(--warn); background: var(--warn-soft); }
+.notif-item.notif-critical { border-left-color: var(--danger); background: var(--danger-soft); }
+.notif-item.notif-critical .notif-title { color: var(--danger-text); }
+.notif-item.notif-warning .notif-title { color: var(--warn-text); }
+
+/* Кнопка «скрыть» уведомление: справа, не мешает тексту */
+.notif-hide-btn {
+  margin-left: auto;
+  flex: none;
+  background: none;
+  border: none;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--muted, #888);
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+.notif-hide-btn:hover { background: var(--row-hover, rgba(0, 0, 0, 0.08)); color: var(--danger, #ef4444); }
+
+/* ===== Сворачиваемые панели ===== */
+.collapsible { border: 1px solid var(--border); border-radius: 10px; margin: 10px 0; overflow: hidden; }
+.collapsible-header { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 14px; cursor: pointer; background: var(--surface); list-style: none; user-select: none; }
+.collapsible-header::-webkit-details-marker { display: none; }
+.collapsible-title { font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.collapsible[open] > .collapsible-header .chevron { transform: rotate(90deg); }
+.chevron { transition: transform .15s ease; display: inline-block; color: var(--muted); }
+.collapsible-body { padding: 12px 14px; border-top: 1px solid var(--border); }
+.collapsible-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+
+/* ===== Бейджи ===== */
+.badge { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: var(--badge-bg); color: var(--badge-text); white-space: nowrap; }
+.badge-ok { background: var(--ok-soft); color: var(--ok-text); }
+.badge-warn { background: var(--warn-soft); color: var(--warn-text); }
+.badge-danger { background: var(--danger-soft); color: var(--danger-text); }
+table .badge-ok { background: var(--ok-soft); }
+table .badge-warn { background: var(--warn-soft); }
+table .badge-danger { background: var(--danger-soft); }
+
+/* ===== Анамнез: предупреждения для назначения ===== */
+.anamnesis-warnings { border: 1px solid var(--warn); background: var(--warn-soft); border-radius: 10px; padding: 10px 14px; margin-top: 12px; }
+.anamnesis-warnings .criteria-title { color: var(--warn-text); }
+/* Предупреждающий текст — единый размер с .error-text / .success-text (13px) */
+.warning-text { font-size: 13px; color: var(--warn-text); margin: 4px 0; }
+.ok-text { font-size: 13px; color: var(--ok); margin: 4px 0; }
+
+/* ===== Анамнез: строка фактора с предупреждением справа ===== */
+.factor-row { display: flex; align-items: flex-start; gap: 12px; padding: 3px 6px; border-radius: 6px; }
+.factor-row.checked { background: var(--warn-soft); }
+.factor-row .checkbox { flex: 0 0 42%; margin: 4px 0; }
+/* Гемотрансфузии: чекбокс на всю ширину блока анамнеза жизни */
+.complaints-free .factor-row .checkbox.transfusion-toggle { flex: 1 1 auto; margin: 2px 0; }
+.complaints-free .transfusion-details textarea { background: var(--warn-soft); }
+/* Общий статус: сетка пунктов осмотра */
+.status-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 18px; }
+/* Строка статуса: поле сверху, предупреждение под ним — не сжимает select */
+.status-row { flex-direction: column; align-items: stretch; gap: 2px; min-width: 0; }
+.status-row .status-field { display: flex; align-items: center; gap: 10px; min-width: 0; }
+/* переопределяем flex:0 0 42% из .factor-row .checkbox */
+.status-row .checkbox.status-field { flex: 1 1 auto; }
+.status-row .status-label { flex: 0 0 130px; font-size: 13px; color: #475569; }
+:root.theme-calc .status-row .status-label { color: #cbd5e1; }
+.status-row select, .status-row input { flex: 1 1 auto; min-width: 0; max-width: 100%; }
+.status-row .factor-warnings { flex: none; padding: 0 6px; }
+/* Рекомендованная (ещё не пройденная) шкала в выпадающем списке */
+option.scale-recommended { background: var(--warn-soft); color: var(--warn-text); font-weight: 600; }
+/* Предупреждение о рекомендованных шкалах после PHQ-4 */
+.phq4-recommendations { border: 1px solid var(--warn); border-left: 4px solid var(--warn); background: var(--warn-soft); border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; }
+.phq4-recommendations .recommended-list { margin: 6px 0 8px; padding-left: 22px; }
+.phq4-recommendations .recommended-list li { margin: 3px 0; font-size: 14px; }
+/* Значимые изменения в динамике тестов — видно даже при свёрнутом блоке */
+.sig-warning-box { border: 1px solid var(--danger); border-left: 4px solid var(--danger); background: var(--danger-soft); border-radius: 8px; padding: 10px 14px; margin-bottom: 12px; }
+.sig-warning-box .warning-text { margin: 3px 0; }
+@media (max-width: 1100px) { .status-grid { grid-template-columns: 1fr; } .status-row .status-label { flex-basis: auto; } }
+.factor-warnings { flex: 1; padding-top: 3px; }
+@media (max-width: 1100px) { .factor-row { flex-direction: column; gap: 2px; } }
+
+/* ===== Общие таблицы дашборда (пациенты, история приёмов) =====
+   Единый стиль для DoctorPatientsView и DoctorPatientView;
+   раньше продублирован в <style scoped> обоих компонентов. */
+.dashboard-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--pad-nav);
+  margin-bottom: var(--sp-2);
+}
+.dashboard-head h2 { margin: 0; }
+.patients-scroll {
+  min-height: 60px;
+  overflow-x: auto;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  max-width: 100%;
+}
+.patients-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  /* та же минимальная высота — нет пустого зазора между таблицей и границей scroll-блока */
+  min-height: 60px;
+}
+.patients-table th,
+.patients-table td {
+  padding: var(--sp-1) var(--pad-nav);
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.patients-table th { max-width: 260px; }
+.patients-table td { max-width: 240px; }
+.patients-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--card);
+  z-index: 1;
+}
+.patient-row { cursor: pointer; }
+.patient-row:hover td { background: color-mix(in srgb, var(--border) 35%, transparent); }
+
+/* ===== АДАПТИВ КАРКАСА: мобильные (≤760px) =====
+   Сайдбар превращается в выдвижную шторку поверх контента,
+   контент занимает всю ширину (без padding-left: 240px/72px).
+   Открывается кнопкой-бургером в шапке (.nav-burger).
+   Правила стоят в конце файла и повторяют селекторы свёрнутого
+   режима (.app.app-collapsed.*) равной специфичностью — поэтому
+   побеждают, даже если пользователь свернул меню на десктопе. */
+
+/* Бургер скрыт на десктопе, виден только на мобильных */
+.nav-burger { display: none; font-size: 18px; padding: 7px 10px; }
+
+/* Backdrop под шторкой */
+.mobile-menu-backdrop {
+  position: fixed; inset: 0; z-index: 70;
+  background: rgb(15 23 42 / 45%);
+}
+
+@media (max-width: 760px) {
+  .nav-burger { display: inline-flex; }
+
+  /* Контент на всю ширину — независимо от состояния «свёрнуто» */
+  .app .app-body,
+  .app.app-collapsed .app-body { padding-left: 0; }
+
+  /* Сайдбар: шторка за левым краем экрана */
+  .app .sidebar,
+  .app.app-collapsed .sidebar {
+    width: min(280px, 86vw);
+    transform: translateX(-100%);
+    transition: transform 0.2s ease;
+    z-index: 80;
+    box-shadow: 0 0 40px rgb(15 23 42 / 25%);
+  }
+  .app.app-mobile-menu-open .sidebar,
+  .app.app-mobile-menu-open.app-collapsed .sidebar { transform: translateX(0); }
+
+  /* Свёрнутое на десктопе меню на мобильном раскрывается в полный вид:
+     возвращаем текст ссылок, логотип, футер и подменю */
+  .app.app-collapsed .sidebar-logo,
+  .app.app-collapsed .sidebar-link .text,
+  .app.app-collapsed .sidebar-user { display: block; }
+  .app.app-collapsed .sidebar-user { display: block; }
+  .app.app-collapsed .sidebar-link .text { display: inline; }
+  .app.app-collapsed .sidebar-header { justify-content: space-between; padding: 0 14px; }
+  .app.app-collapsed .sidebar-collapse { margin-left: auto; }
+  .app.app-collapsed .sidebar-link { justify-content: flex-start; padding: 10px 12px; position: static; }
+  .app.app-collapsed .sidebar-link::after { display: none; }
+  .app.app-collapsed .sidebar-footer { justify-content: space-between; padding: 12px 14px; }
+  .app.app-collapsed .sidebar-footer .btn { display: inline-flex; }
+  .app.app-collapsed .sidebar-submenu { display: block; }
+
+  /* Тултипы сайдбара на тач-устройствах не нужны */
+  .sidebar-copy-tip { display: none; }
+
+  /* Модалки: почти на весь экран */
+  .modal-box { max-width: none; }
+  .scale-modal-box { max-width: none; max-height: 92vh; }
+  .admin-modal { max-width: none; }
+}
+
+/* Компактнее на очень узких экранах */
+@media (max-width: 540px) {
+  .card { padding: 14px; }
+  .visit-section { padding: 6px 10px; }
+  /* Вопросы теста и подписи радио: длинные варианты переносятся */
+  .options { gap: 6px; }
+  .radio { padding: 5px 8px; font-size: 13px; }
+  .question { margin: 10px 0; }
+}
